@@ -3,6 +3,10 @@
  * Validates required environment variables at application startup
  */
 
+// Skip validation during build time in CI
+const isCI = process.env.CI === 'true'
+const skipValidation = process.env.SKIP_ENV_VALIDATION === 'true'
+
 const requiredEnvVars = [
   'DATABASE_URL',
   'NEXTAUTH_SECRET',
@@ -20,6 +24,15 @@ interface ValidationResult {
  * Validates environment variables and provides helpful error messages
  */
 export function validateEnv(): ValidationResult {
+  // Skip validation in CI or when explicitly disabled
+  if (isCI || skipValidation) {
+    return {
+      isValid: true,
+      missing: [],
+      warnings: ['Environment validation skipped (CI/Build mode)'],
+    }
+  }
+
   const missing: string[] = []
   const warnings: string[] = []
 
