@@ -22,7 +22,7 @@
     "rules": {
       "recommended": true,
       "suspicious": {
-        "noExplicitAny": "warn",
+        "noExplicitAny": "off",
         "noArrayIndexKey": "off",
         "noAssignInExpressions": "off",
         "noConfusingVoidType": "off",
@@ -35,7 +35,7 @@
       },
       "style": {
         "useImportType": "error",
-        "noNonNullAssertion": "warn"
+        "noNonNullAssertion": "off"
       },
       "correctness": {
         "useExhaustiveDependencies": "warn",

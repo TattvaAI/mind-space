@@ -3,15 +3,20 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import * as schema from './schema'
 
-// Validate environment variables
-if (!process.env.DATABASE_URL) {
+// Check if we're in a build/CI environment
+const isCI = process.env.CI === 'true'
+const skipDbValidation = process.env.SKIP_ENV_VALIDATION === 'true'
+
+// Validate environment variables (skip in CI/build)
+if (!process.env.DATABASE_URL && !isCI && !skipDbValidation) {
   throw new Error('DATABASE_URL is not set in environment variables')
 }
 
 // For server-side queries (migrations, etc.)
-const connectionString = process.env.DATABASE_URL
+const connectionString =
+  process.env.DATABASE_URL || 'postgresql://placeholder:placeholder@localhost:5432/placeholder'
 
-// Create PostgreSQL client
+// Create PostgreSQL client (will fail gracefully if URL is placeholder)
 const client = postgres(connectionString, { prepare: false })
 
 // Create Drizzle instance
