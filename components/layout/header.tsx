@@ -67,11 +67,7 @@ export function Header({ className, showAuth = true }: HeaderProps) {
             </div>
           </Link>
 
-          <nav
-            className="hidden lg:flex items-center gap-6"
-            role="navigation"
-            aria-label="Main navigation"
-          >
+          <nav className="hidden lg:flex items-center gap-6" aria-label="Main navigation">
             {NAV_LINKS.map((item) => (
               <Link
                 key={item.id}
@@ -153,7 +149,7 @@ export function Header({ className, showAuth = true }: HeaderProps) {
             className="lg:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl animate-fade-in"
           >
             <div className="px-4 py-6 space-y-6">
-              <nav className="space-y-3" role="navigation" aria-label="Mobile navigation">
+              <nav className="space-y-3" aria-label="Mobile navigation">
                 {NAV_LINKS.map((item) => (
                   <Link
                     key={item.id}

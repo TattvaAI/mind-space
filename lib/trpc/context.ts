@@ -7,7 +7,6 @@
  * - Request headers
  */
 
-import type { Session } from 'next-auth'
 import { auth } from '@/auth'
 import { db } from '@/lib/db/client'
 

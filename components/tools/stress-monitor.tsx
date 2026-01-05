@@ -63,7 +63,7 @@ export function StressMonitor() {
 
   useEffect(() => {
     loadStressHistory()
-  }, [])
+  }, [loadStressHistory])
 
   function loadStressHistory() {
     const saved = localStorage.getItem('stress_history')

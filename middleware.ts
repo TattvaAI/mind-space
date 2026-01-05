@@ -41,7 +41,7 @@ export default async function middleware(req: NextRequest) {
 
 async function applyMiddlewareLogic(
   req: NextRequest,
-  authCheck: () => Promise<NextResponse | void>,
+  authCheck: () => Promise<NextResponse | undefined>,
 ): Promise<NextResponse> {
   // Get client IP
   const ip =

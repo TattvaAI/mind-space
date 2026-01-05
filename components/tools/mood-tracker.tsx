@@ -30,7 +30,7 @@ export function MoodTracker() {
 
   useEffect(() => {
     loadMoodHistory()
-  }, [])
+  }, [loadMoodHistory])
 
   function loadMoodHistory() {
     const saved = localStorage.getItem('mood_history')

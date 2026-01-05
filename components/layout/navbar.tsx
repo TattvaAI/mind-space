@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { SignInModal } from '@/components/auth/sign-in-modal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'

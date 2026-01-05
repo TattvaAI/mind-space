@@ -5,12 +5,12 @@
  */
 
 import { google } from '@ai-sdk/google'
+import { TRPCError } from '@trpc/server'
 import { streamText } from 'ai'
 import { z } from 'zod'
-import { TRPCError } from '@trpc/server'
-import { router, protectedProcedure } from '../trpc'
-import { validateMessage } from '@/lib/security'
 import { chatHistory } from '@/lib/db/schema'
+import { validateMessage } from '@/lib/security'
+import { protectedProcedure, router } from '../trpc'
 
 // Mental health focused system prompt
 const SYSTEM_PROMPT = `You are a compassionate AI mental health assistant specifically designed for college students. Your role is to provide empathetic, evidence-based support while maintaining appropriate boundaries.
@@ -91,8 +91,8 @@ function getAIModel() {
     })
   }
 
-  // Use Gemini 2.5 Flash (Stable - Production Ready)
-  return google('gemini-2.5-flash')
+  // Use Gemini 3 Flash (Stable - Production Ready)
+  return google('gemini-3-flash')
 }
 
 export const streamingChatRouter = router({
@@ -180,7 +180,7 @@ export const streamingChatRouter = router({
         return {
           response: finalResponse,
           hasCrisisContent,
-          service: 'gemini-2.5-flash',
+          service: 'gemini-3-flash',
         }
       } catch (error) {
         console.error('Streaming chat error:', error)

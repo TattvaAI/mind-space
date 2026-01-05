@@ -8,8 +8,8 @@ import { router } from '../trpc'
 import { assessmentRouter } from './assessment'
 import { chatRouter } from './chat'
 import { chatHistoryRouter } from './chat-history'
-import { moodRouter } from './mood'
 import { streamingChatRouter } from './chat-streaming'
+import { moodRouter } from './mood'
 
 /**
  * Main application router

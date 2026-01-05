@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 /**
  * Chat E2E Tests
- * 
+ *
  * Tests the AI chat functionality including message sending,
  * receiving responses, and crisis detection
  */
@@ -47,7 +47,7 @@ test.describe('Chat Interface', () => {
     // Verify response has content
     const responseText = await aiResponse.textContent()
     expect(responseText).toBeTruthy()
-    expect(responseText!.length).toBeGreaterThan(10)
+    expect(responseText?.length).toBeGreaterThan(10)
   })
 
   test('should show typing indicator while waiting', async ({ page }) => {
@@ -59,10 +59,10 @@ test.describe('Chat Interface', () => {
 
     // Look for typing indicator
     const typingIndicator = page.locator('[data-testid="typing"], text=/typing/i, .typing').first()
-    
+
     // Typing indicator should appear briefly (might be too fast to catch)
     const isVisible = await typingIndicator.isVisible().catch(() => false)
-    
+
     // This is okay if the response is very fast
     if (isVisible) {
       await expect(typingIndicator).toBeVisible()
@@ -79,13 +79,17 @@ test.describe('Chat Interface', () => {
     await expect(page.locator('text=Test message')).toBeVisible()
 
     // Look for clear/delete button
-    const clearButton = page.locator('button:has-text("Clear"), button[aria-label*="Clear"], button[title*="Clear"]').first()
-    
+    const clearButton = page
+      .locator('button:has-text("Clear"), button[aria-label*="Clear"], button[title*="Clear"]')
+      .first()
+
     if (await clearButton.isVisible()) {
       await clearButton.click()
 
       // Confirm if there's a dialog
-      const confirmButton = page.locator('button:has-text("Yes"), button:has-text("Confirm"), button:has-text("Delete")').first()
+      const confirmButton = page
+        .locator('button:has-text("Yes"), button:has-text("Confirm"), button:has-text("Delete")')
+        .first()
       if (await confirmButton.isVisible()) {
         await confirmButton.click()
       }
@@ -97,32 +101,34 @@ test.describe('Chat Interface', () => {
 
   test('should handle empty message submission', async ({ page }) => {
     const sendButton = page.locator('button[type="submit"]').first()
-    
+
     // Try to send empty message
     await sendButton.click()
 
     // Button should be disabled or nothing should happen
     const messageCount = await page.locator('[role="status"], .message').count()
-    
+
     // Wait a bit to ensure no message was sent
     await page.waitForTimeout(1000)
-    
+
     const newMessageCount = await page.locator('[role="status"], .message').count()
     expect(newMessageCount).toBe(messageCount)
   })
 
   test('should support voice input if available', async ({ page }) => {
     // Check if voice button exists
-    const voiceButton = page.locator('button[aria-label*="voice"], button[title*="voice"], button:has([data-icon="mic"])').first()
-    
+    const voiceButton = page
+      .locator('button[aria-label*="voice"], button[title*="voice"], button:has([data-icon="mic"])')
+      .first()
+
     const isVoiceAvailable = await voiceButton.isVisible().catch(() => false)
-    
+
     if (isVoiceAvailable) {
       await expect(voiceButton).toBeVisible()
-      
+
       // Click voice button (won't actually record in test)
       await voiceButton.click()
-      
+
       // Should show some indication
       await page.waitForTimeout(500)
     } else {
@@ -133,7 +139,7 @@ test.describe('Chat Interface', () => {
 
   test('should handle long messages', async ({ page }) => {
     const longMessage = 'I am feeling very overwhelmed. '.repeat(20)
-    
+
     const messageInput = page.locator('textarea').first()
     await messageInput.fill(longMessage)
 
@@ -159,7 +165,7 @@ test.describe('Chat Interface', () => {
 
   test('should detect crisis keywords and show alert', async ({ page }) => {
     const crisisMessage = 'I feel hopeless and worthless'
-    
+
     const messageInput = page.locator('textarea, input[type="text"]').first()
     await messageInput.fill(crisisMessage)
 
@@ -182,7 +188,7 @@ test.describe('Chat Accessibility', () => {
     // Tab to input
     await page.keyboard.press('Tab')
     await page.keyboard.press('Tab')
-    
+
     // Type message
     await page.keyboard.type('Hello')
 
@@ -201,7 +207,7 @@ test.describe('Chat Accessibility', () => {
     const input = page.locator('textarea, input[type="text"]').first()
     const ariaLabel = await input.getAttribute('aria-label')
     const ariaLabelledBy = await input.getAttribute('aria-labelledby')
-    
+
     expect(ariaLabel || ariaLabelledBy).toBeTruthy()
   })
 })

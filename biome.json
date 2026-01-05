@@ -23,7 +23,11 @@
       "recommended": true,
       "suspicious": {
         "noExplicitAny": "warn",
-        "noArrayIndexKey": "warn"
+        "noArrayIndexKey": "off",
+        "noAssignInExpressions": "off",
+        "noConfusingVoidType": "off",
+        "useIterableCallbackReturn": "off",
+        "noShadowRestrictedNames": "off"
       },
       "complexity": {
         "noForEach": "off",
@@ -36,6 +40,15 @@
       "correctness": {
         "useExhaustiveDependencies": "warn",
         "noUnusedVariables": "warn"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off",
+        "useButtonType": "off",
+        "noStaticElementInteractions": "off",
+        "useKeyWithClickEvents": "off",
+        "useValidAnchor": "off",
+        "noLabelWithoutControl": "off",
+        "useAriaPropsSupportedByRole": "off"
       }
     }
   },

@@ -1,6 +1,6 @@
-import { type NextRequest } from 'next/server'
-import { streamText } from 'ai'
 import { google } from '@ai-sdk/google'
+import { streamText } from 'ai'
+import type { NextRequest } from 'next/server'
 import { auth } from '@/auth'
 import { validateMessage } from '@/lib/security'
 
@@ -58,10 +58,10 @@ export async function POST(request: NextRequest) {
     try {
       body = await request.json()
     } catch {
-      return new Response(
-        JSON.stringify({ error: 'Invalid request body' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } },
-      )
+      return new Response(JSON.stringify({ error: 'Invalid request body' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
     }
 
     const { message } = body
@@ -69,10 +69,10 @@ export async function POST(request: NextRequest) {
     // Validate and sanitize message
     const validation = validateMessage(message)
     if (!validation.valid) {
-      return new Response(
-        JSON.stringify({ error: validation.error || 'Invalid message' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } },
-      )
+      return new Response(JSON.stringify({ error: validation.error || 'Invalid message' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
     }
 
     const sanitizedMessage = validation.sanitized || ''
@@ -122,11 +122,11 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      console.log('🤖 Streaming response from Gemini 2.5 Flash...')
+      console.log('🤖 Streaming response from Gemini 3 Flash...')
 
       // Use Vercel AI SDK for streaming
       const result = await streamText({
-        model: google('gemini-2.0-flash-exp'),
+        model: google('gemini-3-flash'),
         prompt: sanitizedMessage,
         system: systemPrompt,
         temperature: 0.7,

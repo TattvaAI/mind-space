@@ -65,6 +65,8 @@ export default function ChatPage() {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-label="24/7 availability icon"
+                  role="img"
                 >
                   <path
                     strokeLinecap="round"
@@ -87,6 +89,8 @@ export default function ChatPage() {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-label="Privacy shield icon"
+                  role="img"
                 >
                   <path
                     strokeLinecap="round"
@@ -109,6 +113,8 @@ export default function ChatPage() {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-label="Crisis support phone icon"
+                  role="img"
                 >
                   <path
                     strokeLinecap="round"

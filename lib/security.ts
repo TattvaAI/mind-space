@@ -104,7 +104,7 @@ export function validateDietProfile(profile: unknown): { valid: boolean; error?:
   for (const field of numericFields) {
     if (p[field] !== undefined) {
       const value = Number(p[field])
-      if (isNaN(value) || value < 0 || value > 1000) {
+      if (Number.isNaN(value) || value < 0 || value > 1000) {
         return { valid: false, error: `Invalid ${field} value` }
       }
     }

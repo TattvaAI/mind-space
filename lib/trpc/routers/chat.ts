@@ -4,16 +4,15 @@
  * Handles AI chat interactions with Google Gemini and OpenAI fallback
  */
 
-import { z } from 'zod'
 import { TRPCError } from '@trpc/server'
-import { router, protectedProcedure } from '../trpc'
-import { validateMessage } from '@/lib/security'
-import { db } from '@/lib/db/client'
+import { z } from 'zod'
 import { chatHistory } from '@/lib/db/schema'
+import { validateMessage } from '@/lib/security'
+import { protectedProcedure, router } from '../trpc'
 
-// AI Service Configuration - Using only Gemini 2.5 Flash (Stable)
+// AI Service Configuration - Using only Gemini 3 Flash (Stable)
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
-const GEMINI_MODEL = 'gemini-2.5-flash'
+const GEMINI_MODEL = 'gemini-3-flash'
 const GEMINI_BASE_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`
 
 // Mental health focused system prompt

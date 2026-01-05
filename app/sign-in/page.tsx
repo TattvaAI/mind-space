@@ -1,7 +1,7 @@
 'use client'
 
-import { signIn, useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { signIn, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Icons } from '@/components/ui/icons'

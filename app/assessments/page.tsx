@@ -18,19 +18,18 @@ export default function AssessmentsPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    async function loadAssessments() {
+      try {
+        // Use seed data for now instead of database
+        setAssessments(assessmentSeedData)
+      } catch (error) {
+        console.error('Error loading assessments:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
     loadAssessments()
   }, [])
-
-  async function loadAssessments() {
-    try {
-      // Use seed data for now instead of database
-      setAssessments(assessmentSeedData)
-    } catch (error) {
-      console.error('Error loading assessments:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   if (loading) {
     return (

@@ -4,11 +4,11 @@
  * Handles chat message persistence and retrieval
  */
 
-import { z } from 'zod'
-import { desc, eq, sql } from 'drizzle-orm'
 import { TRPCError } from '@trpc/server'
-import { router, protectedProcedure } from '../trpc'
+import { desc, eq, sql } from 'drizzle-orm'
+import { z } from 'zod'
 import { chatHistory } from '@/lib/db/schema'
+import { protectedProcedure, router } from '../trpc'
 
 export const chatHistoryRouter = router({
   /**
@@ -169,15 +169,12 @@ export const chatHistoryRouter = router({
 
       const totalMessages = messages.length
       const emergencyMessages = messages.filter((m: any) => m.isEmergency).length
-      const sentimentCounts = messages.reduce(
-        (acc: Record<string, number>, msg: any) => {
-          if (msg.sentiment) {
-            acc[msg.sentiment] = (acc[msg.sentiment] || 0) + 1
-          }
-          return acc
-        },
-        {},
-      )
+      const sentimentCounts = messages.reduce((acc: Record<string, number>, msg: any) => {
+        if (msg.sentiment) {
+          acc[msg.sentiment] = (acc[msg.sentiment] || 0) + 1
+        }
+        return acc
+      }, {})
 
       return {
         totalMessages,

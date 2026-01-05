@@ -4,11 +4,11 @@
  * Handles mood logging, retrieval, and analytics
  */
 
-import { z } from 'zod'
-import { desc, eq, gte, sql } from 'drizzle-orm'
 import { TRPCError } from '@trpc/server'
-import { router, protectedProcedure } from '../trpc'
+import { desc, eq, sql } from 'drizzle-orm'
+import { z } from 'zod'
 import { userMoods } from '@/lib/db/schema'
+import { protectedProcedure, router } from '../trpc'
 
 export const moodRouter = router({
   /**
@@ -17,7 +17,16 @@ export const moodRouter = router({
   create: protectedProcedure
     .input(
       z.object({
-        mood: z.enum(['happy', 'sad', 'anxious', 'calm', 'stressed', 'neutral', 'excited', 'angry']),
+        mood: z.enum([
+          'happy',
+          'sad',
+          'anxious',
+          'calm',
+          'stressed',
+          'neutral',
+          'excited',
+          'angry',
+        ]),
         intensity: z.enum(['low', 'medium', 'high']),
         notes: z.string().max(1000).optional(),
         triggers: z.array(z.string()).max(10).optional(),
@@ -147,7 +156,9 @@ export const moodRouter = router({
       try {
         const result = await ctx.db
           .delete(userMoods)
-          .where(sql`${userMoods.id} = ${input.id} AND ${userMoods.userId} = ${ctx.session.user.id}`)
+          .where(
+            sql`${userMoods.id} = ${input.id} AND ${userMoods.userId} = ${ctx.session.user.id}`,
+          )
           .returning()
 
         if (result.length === 0) {

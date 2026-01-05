@@ -4,11 +4,11 @@
  * Handles mental health assessment submissions, scoring, and history tracking
  */
 
+import { eq } from 'drizzle-orm'
 import { z } from 'zod'
-import { eq, desc } from 'drizzle-orm'
-import { router, protectedProcedure } from '../trpc'
 import { db } from '@/lib/db/client'
 import { assessmentResults } from '@/lib/db/schema'
+import { protectedProcedure, router } from '../trpc'
 
 // Validation schemas
 const assessmentTypeSchema = z.enum(['PHQ-9', 'GAD-7', 'PSS-10', 'WHO-5'])
@@ -27,28 +27,26 @@ export const assessmentRouter = router({
   /**
    * Submit a new assessment result
    */
-  submit: protectedProcedure
-    .input(submitAssessmentSchema)
-    .mutation(async ({ ctx, input }) => {
-      const result = await db
-        .insert(assessmentResults)
-        .values({
-          userId: ctx.session.user.id,
-          assessmentType: input.assessmentType,
-          score: input.score,
-          severity: input.severity,
-          answers: input.answers,
-          recommendations: input.recommendations || [],
-          createdAt: new Date(),
-        })
-        .returning()
+  submit: protectedProcedure.input(submitAssessmentSchema).mutation(async ({ ctx, input }) => {
+    const result = await db
+      .insert(assessmentResults)
+      .values({
+        userId: ctx.session.user.id,
+        assessmentType: input.assessmentType,
+        score: input.score,
+        severity: input.severity,
+        answers: input.answers,
+        recommendations: input.recommendations || [],
+        createdAt: new Date(),
+      })
+      .returning()
 
-      return {
-        success: true,
-        result: result[0],
-        message: 'Assessment saved successfully',
-      }
-    }),
+    return {
+      success: true,
+      result: result[0],
+      message: 'Assessment saved successfully',
+    }
+  }),
 
   /**
    * Get assessment history for the current user
@@ -68,7 +66,10 @@ export const assessmentRouter = router({
       const results = await db.query.assessmentResults.findMany({
         where: assessmentType
           ? (results, { and, eq }) =>
-              and(eq(results.userId, ctx.session.user.id), eq(results.assessmentType, assessmentType))
+              and(
+                eq(results.userId, ctx.session.user.id),
+                eq(results.assessmentType, assessmentType),
+              )
           : (results, { eq }) => eq(results.userId, ctx.session.user.id),
         limit,
         orderBy: (results, { desc }) => [desc(results.createdAt)],
@@ -134,7 +135,8 @@ export const assessmentRouter = router({
 
       // Calculate statistics
       const scores = allResults.map((r: { score: number }) => r.score)
-      const avgScore = scores.length > 0 ? scores.reduce((a: number, b: number) => a + b, 0) / scores.length : 0
+      const avgScore =
+        scores.length > 0 ? scores.reduce((a: number, b: number) => a + b, 0) / scores.length : 0
 
       const latestScore = scores[0] || 0
       const previousScore = scores[1] || latestScore

@@ -73,10 +73,10 @@ export const CRISIS_KEYWORDS = [
 export const AI_PROVIDERS = {
   gemini: {
     name: 'Google Gemini',
-    model: 'gemini-2.0-flash-exp',
+    model: 'gemini-3-flash',
     apiKey: process.env.GEMINI_API_KEY,
     enabled: !!process.env.GEMINI_API_KEY,
-    getModel: () => google('gemini-2.0-flash-exp'),
+    getModel: () => google('gemini-3-flash'),
   },
   openai: {
     name: 'OpenAI GPT-4',

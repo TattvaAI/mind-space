@@ -69,7 +69,7 @@ export function AssessmentInterface({ assessmentId }: { assessmentId: string }) 
       })
       // Set result from database response (data.result contains the assessment record)
       const dbResult = data.result
-      
+
       // Find interpretation from assessment seed data
       const interpretation = assessment?.scoring_logic.ranges.find(
         (range) => dbResult.score >= range.min && dbResult.score <= range.max,
@@ -95,7 +95,7 @@ export function AssessmentInterface({ assessmentId }: { assessmentId: string }) 
   })
 
   // Load assessment history to show past results (optional - for future use)
-  const { data: history } = trpc.assessment.getHistory.useQuery(
+  const { data: _history } = trpc.assessment.getHistory.useQuery(
     { limit: 5, assessmentType: assessmentId as 'PHQ-9' | 'GAD-7' | 'PSS-10' | 'WHO-5' },
     { enabled: false }, // Don't auto-fetch for now
   )
@@ -154,7 +154,7 @@ export function AssessmentInterface({ assessmentId }: { assessmentId: string }) 
     }
   }
 
-  function generateRecommendations(score: number, severity?: string): AssessmentRecommendations {
+  function generateRecommendations(_score: number, severity?: string): AssessmentRecommendations {
     // Generate personalized recommendations based on score and severity
     const recommendations: AssessmentRecommendations = {
       resources: [],
@@ -430,7 +430,7 @@ export function AssessmentInterface({ assessmentId }: { assessmentId: string }) 
           onValueChange={(value) => {
             setAnswers((prev) => ({
               ...prev,
-              [currentQuestion.id]: parseInt(value),
+              [currentQuestion.id]: parseInt(value, 10),
             }))
           }}
           className="space-y-3"

@@ -12,8 +12,8 @@ import {
   TrendingUp,
 } from 'lucide-react'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { Footer } from '@/components/layout/footer'
 import { NavBar } from '@/components/layout/navbar'

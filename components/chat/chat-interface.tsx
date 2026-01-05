@@ -69,15 +69,16 @@ export function ChatInterface() {
     },
     onError: (error) => {
       console.error('Error sending message:', error)
-      
+
       // Add fallback error message
       const errorResponse: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: "I'm sorry, I'm having trouble connecting right now. If you're in crisis, please call 988 or visit the emergency page for immediate help.",
+        content:
+          "I'm sorry, I'm having trouble connecting right now. If you're in crisis, please call 988 or visit the emergency page for immediate help.",
         timestamp: new Date(),
       }
-      
+
       setMessages((prev) => [...prev, errorResponse])
       setIsTyping(false)
     },
@@ -86,13 +87,13 @@ export function ChatInterface() {
   useEffect(() => {
     loadChatHistory()
     initializeSpeech()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [initializeSpeech, loadChatHistory]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
-  }, [messages])
+  }, [])
 
   // Initialize speech recognition and synthesis
   function initializeSpeech() {

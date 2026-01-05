@@ -1,11 +1,10 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { validateDietProfile } from '@/lib/security'
 
-// Using Gemini 2.5 Flash (Stable) - same as chat endpoints
+// Using Gemini 3 Flash (Stable) - same as chat endpoints
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
-const GEMINI_MODEL = 'gemini-2.5-flash'
-const GEMINI_BASE_URL =
-  `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`
+const GEMINI_MODEL = 'gemini-3-flash'
+const GEMINI_BASE_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`
 
 type DietPlannerProfile = {
   age?: string

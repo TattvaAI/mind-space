@@ -65,7 +65,7 @@ export function WellnessJournal() {
 
   useEffect(() => {
     loadEntries()
-  }, [])
+  }, [loadEntries])
 
   function loadEntries() {
     const saved = localStorage.getItem('journal_entries')
