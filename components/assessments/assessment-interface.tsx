@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { AlertTriangle, Brain, CheckCircle, Clock, Heart, Shield } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -301,9 +302,12 @@ export function AssessmentInterface({ assessmentId }: { assessmentId: string }) 
               Based on your results, we recommend seeking professional support from a mental health
               professional. Remember, seeking help is a sign of strength, not weakness.
             </p>
-            <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+            <Link
+              href="/appointments"
+              className="inline-block bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
+            >
               Find Professional Help
-            </button>
+            </Link>
           </motion.div>
         )}
 
@@ -358,12 +362,18 @@ export function AssessmentInterface({ assessmentId }: { assessmentId: string }) 
           >
             Retake Assessment
           </button>
-          <button className="bg-[#001f4d] hover:bg-[#001437] text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+          <Link
+            href="/resources"
+            className="bg-[#001f4d] hover:bg-[#001437] text-white px-6 py-3 rounded-lg font-semibold transition-colors text-center"
+          >
             View Resources
-          </button>
-          <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+          </Link>
+          <Link
+            href="/emergency"
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors text-center"
+          >
             Get Support
-          </button>
+          </Link>
         </div>
       </motion.div>
     )

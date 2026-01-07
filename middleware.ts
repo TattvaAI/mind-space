@@ -80,7 +80,7 @@ async function applyMiddlewareLogic(
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https: blob:",
     "font-src 'self' data: https://fonts.gstatic.com",
-    "connect-src 'self' https://api.openai.com https://generativelanguage.googleapis.com https://openrouter.ai https://vitals.vercel-insights.com",
+    "connect-src 'self' https://generativelanguage.googleapis.com https://vitals.vercel-insights.com",
     "frame-ancestors 'none'",
   ]
 

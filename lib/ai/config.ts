@@ -5,7 +5,6 @@
  */
 
 import { google } from '@ai-sdk/google'
-import { openai } from '@ai-sdk/openai'
 
 export const SYSTEM_PROMPT = `You are a compassionate AI mental health assistant specifically designed for college students. Your role is to provide empathetic, evidence-based support while maintaining appropriate boundaries.
 
@@ -78,13 +77,6 @@ export const AI_PROVIDERS = {
     enabled: !!process.env.GEMINI_API_KEY,
     getModel: () => google('gemini-3-flash'),
   },
-  openai: {
-    name: 'OpenAI GPT-4',
-    model: 'gpt-4-turbo',
-    apiKey: process.env.OPENAI_API_KEY,
-    enabled: !!process.env.OPENAI_API_KEY,
-    getModel: () => openai('gpt-4-turbo'),
-  },
 } as const
 
 export const AI_CONFIG = {
@@ -92,7 +84,7 @@ export const AI_CONFIG = {
   primaryProvider: 'gemini' as keyof typeof AI_PROVIDERS,
 
   // Fallback order
-  fallbackOrder: ['gemini', 'openai'] as (keyof typeof AI_PROVIDERS)[],
+  fallbackOrder: ['gemini'] as (keyof typeof AI_PROVIDERS)[],
 
   // Model parameters
   temperature: 0.7,

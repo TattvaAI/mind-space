@@ -12,7 +12,7 @@ export interface ChatMessage {
   content: string
   timestamp: number
   hasCrisisContent?: boolean
-  service?: string // Which AI service responded (gemini, openai, fallback)
+  service?: string // Which AI service responded (gemini, fallback)
   isError?: boolean
   synced: boolean // Whether it's been synced to the database
 }

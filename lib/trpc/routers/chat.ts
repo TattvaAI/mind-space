@@ -1,7 +1,7 @@
 /**
  * Chat Router (tRPC)
  *
- * Handles AI chat interactions with Google Gemini and OpenAI fallback
+ * Handles AI chat interactions using Google Gemini 3 Flash
  */
 
 import { TRPCError } from '@trpc/server'
