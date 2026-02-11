@@ -79,24 +79,24 @@ function detectCrisis(message: string): boolean {
 }
 
 /**
- * Get AI model - Using Cerebrus gpt-oss-120b
+ * Get AI model - Using Groq llama-3.3-70b-versatile
  */
 function getAIModel() {
-  const CEREBRUS_API_KEY = process.env.CEREBRUS_API_KEY
+  const GROQ_API_KEY = process.env.GROQ_API_KEY
 
-  if (!CEREBRUS_API_KEY) {
+  if (!GROQ_API_KEY) {
     throw new TRPCError({
       code: 'INTERNAL_SERVER_ERROR',
-      message: 'CEREBRUS_API_KEY not configured. Please set it in your environment variables.',
+      message: 'GROQ_API_KEY not configured. Please set it in your environment variables.',
     })
   }
 
-  // Use Cerebrus gpt-oss-120b
+  // Use Groq llama-3.3-70b-versatile
   return {
     provider: 'openai',
-    apiKey: CEREBRUS_API_KEY,
-    baseURL: 'https://api.cerebras.ai/v1',
-    model: 'gpt-oss-120b',
+    apiKey: GROQ_API_KEY,
+    baseURL: 'https://api.groq.com/openai/v1',
+    model: 'llama-3.3-70b-versatile',
   }
 }
 
@@ -135,8 +135,8 @@ export const streamingChatRouter = router({
       try {
         const modelConfig = getAIModel()
 
-        // Create Cerebrus client using OpenAI-compatible API
-        const cerebrus = createOpenAI({
+        // Create Groq client using OpenAI-compatible API
+        const groq = createOpenAI({
           apiKey: modelConfig.apiKey,
           baseURL: modelConfig.baseURL,
         })
@@ -150,7 +150,7 @@ export const streamingChatRouter = router({
 
         // Generate streaming response
         const result = streamText({
-          model: cerebrus(modelConfig.model) as any,
+          model: groq(modelConfig.model) as any,
           messages,
           temperature: 0.7,
         })
@@ -194,7 +194,7 @@ export const streamingChatRouter = router({
         return {
           response: finalResponse,
           hasCrisisContent,
-          service: 'cerebrus-gpt-oss-120b',
+          service: 'groq-llama-3.3-70b',
         }
       } catch (error) {
         console.error('Streaming chat error:', error)

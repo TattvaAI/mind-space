@@ -4,8 +4,6 @@
  * Centralized configuration for AI services used in mental health support
  */
 
-import { google } from '@ai-sdk/google'
-
 export const SYSTEM_PROMPT = `You are a compassionate AI mental health assistant specifically designed for college students. Your role is to provide empathetic, evidence-based support while maintaining appropriate boundaries.
 
 CORE GUIDELINES:
@@ -70,21 +68,21 @@ export const CRISIS_KEYWORDS = [
 ]
 
 export const AI_PROVIDERS = {
-  cerebrus: {
-    name: 'Cerebrus',
-    model: 'gpt-oss-120b',
-    apiKey: process.env.CEREBRUS_API_KEY,
-    enabled: !!process.env.CEREBRUS_API_KEY,
-    baseURL: 'https://api.cerebras.ai/v1',
+  groq: {
+    name: 'Groq',
+    model: 'llama-3.3-70b-versatile',
+    apiKey: process.env.GROQ_API_KEY,
+    enabled: !!process.env.GROQ_API_KEY,
+    baseURL: 'https://api.groq.com/openai/v1',
   },
 } as const
 
 export const AI_CONFIG = {
   // Primary provider
-  primaryProvider: 'cerebrus' as keyof typeof AI_PROVIDERS,
+  primaryProvider: 'groq' as keyof typeof AI_PROVIDERS,
 
   // Fallback order
-  fallbackOrder: ['cerebrus'] as (keyof typeof AI_PROVIDERS)[],
+  fallbackOrder: ['groq'] as (keyof typeof AI_PROVIDERS)[],
 
   // Model parameters
   temperature: 0.7,

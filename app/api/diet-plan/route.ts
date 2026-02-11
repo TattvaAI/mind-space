@@ -1,10 +1,10 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { validateDietProfile } from '@/lib/security'
 
-// Using Cerebrus gpt-oss-120b - same as chat endpoints
-const CEREBRUS_API_KEY = process.env.CEREBRUS_API_KEY
-const CEREBRUS_MODEL = 'gpt-oss-120b'
-const CEREBRUS_BASE_URL = 'https://api.cerebras.ai/v1/chat/completions'
+// Using Groq llama-3.3-70b-versatile - same as chat endpoints
+const GROQ_API_KEY = process.env.GROQ_API_KEY
+const GROQ_MODEL = 'llama-3.3-70b-versatile'
+const GROQ_BASE_URL = 'https://api.groq.com/openai/v1/chat/completions'
 
 type DietPlannerProfile = {
   age?: string
@@ -286,11 +286,8 @@ function extractJsonFromText(text?: string | null): MealPlan | null {
   }
 }
 
-async function callCerebrus(
-  profile: DietPlannerProfile,
-  dayOfWeek: string,
-): Promise<MealPlan | null> {
-  if (!CEREBRUS_API_KEY) return null
+async function callGroq(profile: DietPlannerProfile, dayOfWeek: string): Promise<MealPlan | null> {
+  if (!GROQ_API_KEY) return null
 
   const prompt = `You are a registered dietitian helping a college student. Build a personalised meal plan for ${dayOfWeek}.
   Guidelines:
@@ -321,14 +318,14 @@ async function callCerebrus(
   - Keep messaging uplifting and student-friendly.
   - Return ONLY JSON without markdown fences.`
 
-  const response = await fetch(CEREBRUS_BASE_URL, {
+  const response = await fetch(GROQ_BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${CEREBRUS_API_KEY}`,
+      Authorization: `Bearer ${GROQ_API_KEY}`,
     },
     body: JSON.stringify({
-      model: CEREBRUS_MODEL,
+      model: GROQ_MODEL,
       messages: [
         {
           role: 'user',
@@ -340,7 +337,7 @@ async function callCerebrus(
   })
 
   if (!response.ok) {
-    throw new Error(`Cerebrus API error: ${response.status} ${response.statusText}`)
+    throw new Error(`Groq API error: ${response.status} ${response.statusText}`)
   }
 
   const data = await response.json()
@@ -384,14 +381,14 @@ export async function POST(request: NextRequest) {
 
     let mealPlan: MealPlan | null = null
 
-    // Try Cerebrus gpt-oss-120b (our AI provider)
+    // Try Groq llama-3.3-70b-versatile (our AI provider)
     try {
-      mealPlan = await callCerebrus(profile, dayOfWeek)
+      mealPlan = await callGroq(profile, dayOfWeek)
     } catch (error) {
-      console.warn('Cerebrus diet plan generation failed', error)
+      console.warn('Groq diet plan generation failed', error)
     }
 
-    // Use fallback if Cerebrus failed
+    // Use fallback if Groq failed
     if (!mealPlan) {
       mealPlan = buildFallbackPlan(profile, dayOfWeek)
     }

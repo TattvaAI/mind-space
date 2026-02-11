@@ -44,9 +44,9 @@ export function validateEnv(): ValidationResult {
   }
 
   // Check optional but recommended variables
-  if (!process.env.CEREBRUS_API_KEY) {
+  if (!process.env.GROQ_API_KEY) {
     warnings.push(
-      'CEREBRUS_API_KEY not set. Chat functionality requires Cerebrus API key to be configured.',
+      'GROQ_API_KEY not set. Chat functionality requires Groq API key to be configured.',
     )
   }
 

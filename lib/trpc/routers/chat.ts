@@ -10,10 +10,10 @@ import { chatHistory } from '@/lib/db/schema'
 import { validateMessage } from '@/lib/security'
 import { protectedProcedure, router } from '../trpc'
 
-// AI Service Configuration - Using Cerebrus gpt-oss-120b
-const CEREBRUS_API_KEY = process.env.CEREBRUS_API_KEY
-const CEREBRUS_MODEL = 'gpt-oss-120b'
-const CEREBRUS_BASE_URL = 'https://api.cerebras.ai/v1/chat/completions'
+// AI Service Configuration - Using Groq llama-3.3-70b-versatile
+const GROQ_API_KEY = process.env.GROQ_API_KEY
+const GROQ_MODEL = 'llama-3.3-70b-versatile'
+const GROQ_BASE_URL = 'https://api.groq.com/openai/v1/chat/completions'
 
 // Mental health focused system prompt
 const SYSTEM_PROMPT = `You are a compassionate AI mental health assistant specifically designed for college students. Your role is to provide empathetic, evidence-based support while maintaining appropriate boundaries.
@@ -74,24 +74,24 @@ const CRISIS_KEYWORDS = [
 ]
 
 /**
- * Call Cerebrus API
+ * Call Groq API
  */
-async function callCerebrus(message: string): Promise<string | null> {
-  if (!CEREBRUS_API_KEY) {
-    console.error('CEREBRUS_API_KEY not configured')
+async function callGroq(message: string): Promise<string | null> {
+  if (!GROQ_API_KEY) {
+    console.error('GROQ_API_KEY not configured')
     return null
   }
 
   try {
-    console.log('Using Cerebrus gpt-oss-120b...')
-    const response = await fetch(CEREBRUS_BASE_URL, {
+    console.log('Using Groq llama-3.3-70b-versatile...')
+    const response = await fetch(GROQ_BASE_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${CEREBRUS_API_KEY}`,
+        Authorization: `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: CEREBRUS_MODEL,
+        model: GROQ_MODEL,
         messages: [
           {
             role: 'system',
@@ -109,14 +109,14 @@ async function callCerebrus(message: string): Promise<string | null> {
     if (response.ok) {
       const completion = await response.json()
       const aiResponse = completion.choices?.[0]?.message?.content
-      console.log('Cerebrus response successful')
+      console.log('Groq response successful')
       return aiResponse || null
     }
 
-    console.warn(`Cerebrus API error: ${response.status}`)
+    console.warn(`Groq API error: ${response.status}`)
     return null
   } catch (error) {
-    console.warn('Cerebrus failed:', error)
+    console.warn('Groq failed:', error)
     return null
   }
 }
@@ -169,11 +169,11 @@ export const chatRouter = router({
       const hasCrisisContent = detectCrisis(sanitizedMessage)
 
       try {
-        // Try Cerebrus - our only AI service
-        let aiResponse = await callCerebrus(sanitizedMessage)
-        let service = 'cerebrus'
+        // Try Groq - our only AI service
+        let aiResponse = await callGroq(sanitizedMessage)
+        let service = 'groq'
 
-        // Use fallback if Cerebrus failed
+        // Use fallback if Groq failed
         if (!aiResponse) {
           aiResponse = getFallbackResponse()
           service = 'fallback'

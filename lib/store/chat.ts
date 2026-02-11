@@ -169,7 +169,7 @@ export const useChatStore = create<ChatState>()(
 
       // Message actions
       addMessage: (message) => {
-        const { currentSessionId, sessions } = get()
+        const { currentSessionId } = get()
 
         // Create a new session if none exists
         if (!currentSessionId) {

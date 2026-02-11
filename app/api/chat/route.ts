@@ -108,8 +108,8 @@ export async function POST(request: NextRequest) {
       : SYSTEM_PROMPT
 
     // Check if API key is configured
-    if (!process.env.CEREBRUS_API_KEY) {
-      console.error('CEREBRUS_API_KEY not configured')
+    if (!process.env.GROQ_API_KEY) {
+      console.error('GROQ_API_KEY not configured')
       return new Response(
         JSON.stringify({
           response:
@@ -122,17 +122,17 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      console.log('🤖 Streaming response from Cerebrus gpt-oss-120b...')
+      console.log('🤖 Streaming response from Groq llama-3.3-70b...')
 
-      // Create Cerebrus client using OpenAI-compatible API
-      const cerebrus = createOpenAI({
-        apiKey: process.env.CEREBRUS_API_KEY,
-        baseURL: 'https://api.cerebras.ai/v1',
+      // Create Groq client using OpenAI-compatible API
+      const groq = createOpenAI({
+        apiKey: process.env.GROQ_API_KEY,
+        baseURL: 'https://api.groq.com/openai/v1',
       })
 
       // Use Vercel AI SDK for streaming
       const result = streamText({
-        model: cerebrus('gpt-oss-120b') as any,
+        model: groq('llama-3.3-70b-versatile') as any,
         prompt: sanitizedMessage,
         system: systemPrompt,
         temperature: 0.7,
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
         },
       })
     } catch (error) {
-      console.error('Cerebrus streaming error:', error)
+      console.error('Groq streaming error:', error)
 
       // Fallback to non-streaming response
       return new Response(
