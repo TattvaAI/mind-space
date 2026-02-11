@@ -88,7 +88,7 @@ async function callCerebrus(message: string): Promise<string | null> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${CEREBRUS_API_KEY}`,
+        Authorization: `Bearer ${CEREBRUS_API_KEY}`,
       },
       body: JSON.stringify({
         model: CEREBRUS_MODEL,

@@ -134,7 +134,7 @@ export const streamingChatRouter = router({
 
       try {
         const modelConfig = getAIModel()
-        
+
         // Create Cerebrus client using OpenAI-compatible API
         const cerebrus = createOpenAI({
           apiKey: modelConfig.apiKey,

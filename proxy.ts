@@ -28,7 +28,7 @@ function rateLimit(ip: string, limit = 100, windowMs = 60000): boolean {
   return true
 }
 
-export default async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   return applyMiddlewareLogic(req, async () => {
     if (isProtectedRoute(req.nextUrl.pathname)) {
       const session = await auth()
